@@ -53,7 +53,7 @@ class MovieListViewController : UITableViewController, NSFetchedResultsControlle
                     if let moviesDictionaries = JSONResult.valueForKey("cast") as? [[String : AnyObject]] {
                         
                         // Parse the array of movies dictionaries
-                        moviesDictionaries.map() { (dictionary: [String : AnyObject]) -> Movie in
+                        let _ = moviesDictionaries.map() { (dictionary: [String : AnyObject]) -> Movie in
                             let movie = Movie(dictionary: dictionary, context: self.sharedContext)
                             
                             movie.actor = self.actor
@@ -170,33 +170,26 @@ class MovieListViewController : UITableViewController, NSFetchedResultsControlle
     // This is the most interesting method. Take particular note of way the that newIndexPath
     // parameter gets unwrapped and put into an array literal: [newIndexPath!]
     //
-    func controller(controller: NSFetchedResultsController,
-        didChangeObject anObject: NSManagedObject,
-        atIndexPath indexPath: NSIndexPath?,
-        forChangeType type: NSFetchedResultsChangeType,
-        newIndexPath: NSIndexPath?) {
-            
-            switch type {
-            case .Insert:
-                tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
-                
-            case .Delete:
-                tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
-                
-            case .Update:
-                let cell = tableView.cellForRowAtIndexPath(indexPath!) as! ActorTableViewCell
-                let movie = controller.objectAtIndexPath(indexPath!) as! Movie
-                self.configureCell(cell, movie: movie)
-                
-            case .Move:
-                tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
-                tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
-                
-            default:
-                return
-            }
+    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+      switch type {
+      case .Insert:
+        tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
+        
+      case .Delete:
+        tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
+        
+      case .Update:
+        let cell = tableView.cellForRowAtIndexPath(indexPath!) as! ActorTableViewCell
+        let movie = controller.objectAtIndexPath(indexPath!) as! Movie
+        self.configureCell(cell, movie: movie)
+        
+      case .Move:
+        tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
+        tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
+
+      }
     }
-    
+  
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         self.tableView.endUpdates()
     }
@@ -251,34 +244,3 @@ class MovieListViewController : UITableViewController, NSFetchedResultsControlle
         cell.imageView!.image = posterImage
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -141,8 +141,3 @@ class ActorPickerViewController: UIViewController, UITableViewDelegate, UITableV
         cell.textLabel!.text = actor.name
     }
 }
-
-
-
-
-

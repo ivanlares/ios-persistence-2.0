@@ -208,30 +208,26 @@ class FavoriteActorViewController : UITableViewController, NSFetchedResultsContr
     // This is the most interesting method. Take particular note of way the that newIndexPath
     // parameter gets unwrapped and put into an array literal: [newIndexPath!]
     //
-    
-    func controller(controller: NSFetchedResultsController,
-        didChangeObject anObject: NSManagedObject,
-        atIndexPath indexPath: NSIndexPath?,
-        forChangeType type: NSFetchedResultsChangeType,
-        newIndexPath: NSIndexPath?) {
-            
-            switch type {
-            case .Insert:
-                tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
-                
-            case .Delete:
-                tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
-                
-            case .Update:
-                let cell = tableView.cellForRowAtIndexPath(indexPath!) as! ActorTableViewCell
-                let actor = controller.objectAtIndexPath(indexPath!) as! Person
-                self.configureCell(cell, withActor: actor)
-                
-            case .Move:
-                tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
-                tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
-            }
+  
+  func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+    switch type {
+    case .Insert:
+      tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
+      
+    case .Delete:
+      tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
+      
+    case .Update:
+      let cell = tableView.cellForRowAtIndexPath(indexPath!) as! ActorTableViewCell
+      let actor = controller.objectAtIndexPath(indexPath!) as! Person
+      self.configureCell(cell, withActor: actor)
+      
+    case .Move:
+      tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
+      tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
     }
+  }
+  
     
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         self.tableView.endUpdates()
@@ -289,34 +285,3 @@ class FavoriteActorViewController : UITableViewController, NSFetchedResultsContr
         return documentsDirectoryURL.URLByAppendingPathComponent(filename)
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
